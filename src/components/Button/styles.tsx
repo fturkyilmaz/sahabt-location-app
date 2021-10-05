@@ -1,12 +1,12 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../constants';
+import {Colors, FontFamilies, FontSize} from '../../constants';
 
 const styles = StyleSheet.create({
   container: {flexDirection: 'row'},
   text: {
-    fontSize: 15,
+    fontSize: FontSize.f15,
     letterSpacing: 1.2,
-    fontWeight: '600',
+    fontFamily: FontFamilies.msSemiBold,
     color: Colors.cFFFFFF,
   },
   button: {
