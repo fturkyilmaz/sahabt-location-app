@@ -1,6 +1,6 @@
 import React from 'react';
 import {View, StyleSheet, TextInput} from 'react-native';
-import {Colors, FontFamilies} from '../../constants';
+import {Colors, FontFamilies, FontSize} from '../../constants';
 import Text from '../Text';
 
 type Props = React.ComponentProps<typeof TextInput> & {
@@ -23,7 +23,8 @@ const TextField = React.forwardRef<TextInput, Props>((props, ref) => {
 const styles = StyleSheet.create({
   container: {},
   input: {
-    fontSize: 16,
+    fontSize: FontSize.f15,
+    fontFamily: FontFamilies.msRegular,
     padding: 15,
     borderWidth: 1,
     borderTopLeftRadius: 10,
@@ -32,7 +33,7 @@ const styles = StyleSheet.create({
     borderColor: Colors.c7c7e80,
   },
   labelContainer: {paddingVertical: 10},
-  label: {fontSize: 14, fontFamily: FontFamilies.msBold},
+  label: {fontSize: FontSize.f14, fontFamily: FontFamilies.msSemiBold},
 });
 
 export default TextField;

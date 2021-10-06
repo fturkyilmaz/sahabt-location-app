@@ -1,6 +1,6 @@
 type PrettierObjectProps = {
     key?: string;
-    value: string;
+    value: any;
 }
 
 export default function prettierObject(params: PrettierObjectProps) {

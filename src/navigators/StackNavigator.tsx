@@ -10,7 +10,7 @@ import MapScreen from '../screens/Client/Map';
 const Stack = createStackNavigator<RootStackParamList>();
 
 export default function StackNavigator() {
-  const isAuth = false;
+  const isAuth = true;
 
   const initialRouteName = isAuth ? AppScreens.Login : AppScreens.Map;
   return (
@@ -20,7 +20,11 @@ export default function StackNavigator() {
         component={LoginScreen}
         options={{headerShown: false}}
       />
-      <Stack.Screen name={AppScreens.Map} component={MapScreen} />
+      <Stack.Screen
+        name={AppScreens.Map}
+        options={{headerShown: false}}
+        component={MapScreen}
+      />
       <Stack.Screen name={AppScreens.Profile} component={ProfileScreen} />
       <Stack.Screen name={AppScreens.Home} component={HomeScreen} />
     </Stack.Navigator>
