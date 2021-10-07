@@ -1,12 +1,18 @@
-import React from 'react';
+import React, {useEffect} from 'react';
 import {Image, View} from 'react-native';
 import Button from '../../../components/Button';
 import TextInput from '../../../components/TextInput';
 import styles from './styles';
 
 import {Colors, Images, Layout} from '../../../constants';
+import AsyncStorage from '@react-native-async-storage/async-storage';
 
 const Login = () => {
+  const handleLogin = async () => {
+    await AsyncStorage.setItem('isAuth', JSON.stringify({isAuth: true}));
+    console.log('Giriş Yaptımmmm');
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
@@ -35,10 +41,7 @@ const Login = () => {
             <TextInput label="Şifre" secureTextEntry />
 
             <View style={{marginVertical: 70}}>
-              <Button
-                text="Login"
-                onPress={() => console.log('Giriş Yaptımmmm')}
-              />
+              <Button text="Login" onPress={async () => await handleLogin()} />
             </View>
           </View>
         </View>
