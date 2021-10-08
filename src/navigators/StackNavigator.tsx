@@ -71,6 +71,8 @@ export default function StackNavigator() {
           );
         },
         tabBarActiveTintColor: Colors.c90BF00,
+        headerStyle: {backgroundColor: Colors.c90BF00},
+        headerTintColor: Colors.cFFFFFF,
       })}>
       <Tab.Screen name={AppScreens.Home} component={HomeScreen} />
       <Tab.Screen
