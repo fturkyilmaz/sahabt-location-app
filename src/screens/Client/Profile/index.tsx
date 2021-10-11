@@ -1,9 +1,9 @@
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
-import Button from '../../../components/Button';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors, FontFamilies, FontSize} from '../../../constants';
+import {useTranslation} from 'react-i18next';
 
 type OptionButtonProp = React.ComponentProps<typeof Pressable> & {
   label: string;
@@ -17,11 +17,15 @@ const LANGUAGES = [
 ];
 
 const THEMES = [
-  {code: 'dark', label: 'Koyu'},
-  {code: 'light', label: 'Açık'},
+  {code: 'dark', label: 'Dark'},
+  {code: 'light', label: 'Light'},
 ];
 
 export default function ProfileScreen() {
+  const {t, i18n} = useTranslation();
+
+  const selectedLanguageCode = i18n.language;
+
   const logout = async () => {
     try {
       await AsyncStorage.removeItem('isAuth');
@@ -42,7 +46,6 @@ export default function ProfileScreen() {
     );
   }
 
-  const [selectedLanguageCode, setSelectedLanguageCode] = useState('tr');
   const [selectedThemeCode, setSelectedThemeCode] = useState('light');
 
   const getLanguage = () => {
@@ -54,7 +57,7 @@ export default function ProfileScreen() {
           key={language.code}
           style={styles.buttonContainer}
           disabled={selectedLanguage}
-          onPress={() => setSelectedLanguageCode(language.code)}>
+          onPress={() => setLanguage(language.code)}>
           <Text style={selectedLanguage ? styles.selectedText : styles.text}>
             {language.label}
           </Text>
@@ -81,19 +84,27 @@ export default function ProfileScreen() {
     });
   };
 
+  const setLanguage = (code: string) => {
+    return i18n.changeLanguage(code);
+  };
+
   return (
     <View style={styles.container}>
       <View style={styles.innerContainer}>
-        <OptionButton label="Dil Seçiniz" iconName="ios-language-outline">
+        <OptionButton
+          label={t('common:languageSelector')}
+          iconName="ios-language-outline">
           {getLanguage()}
         </OptionButton>
 
-        <OptionButton label="Tema Seçiniz" iconName="ios-cloudy-night-outline">
+        <OptionButton
+          label={t('common:themeSelector')}
+          iconName="ios-cloudy-night-outline">
           {getTheme()}
         </OptionButton>
 
         <View style={{marginVertical: 30}}>
-          <Text onPress={async () => await logout()}>Çıkış Yap</Text>
+          <Text onPress={async () => await logout()}>{t('common:logout')}</Text>
         </View>
 
         {/* <Button text="Çıkış Yap" /> */}

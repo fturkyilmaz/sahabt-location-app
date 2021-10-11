@@ -6,12 +6,14 @@ import styles from './styles';
 
 import {Colors, Images, Layout} from '../../../constants';
 import AsyncStorage from '@react-native-async-storage/async-storage';
+import {useTranslation} from 'react-i18next';
 
 const Login = () => {
   const handleLogin = async () => {
     await AsyncStorage.setItem('isAuth', JSON.stringify({isAuth: true}));
-    console.log('Giriş Yaptımmmm');
   };
+
+  const {t} = useTranslation();
 
   return (
     <View style={styles.container}>
@@ -37,8 +39,8 @@ const Login = () => {
           }}>
           <View
             style={{flex: 1, marginHorizontal: 20, justifyContent: 'center'}}>
-            <TextInput label="Kullanıcı Adı" />
-            <TextInput label="Şifre" secureTextEntry />
+            <TextInput label={t('common:username')} />
+            <TextInput label={t('common:password')} secureTextEntry />
 
             <View style={{marginVertical: 70}}>
               <Button text="Login" onPress={async () => await handleLogin()} />

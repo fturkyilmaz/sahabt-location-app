@@ -10,6 +10,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../constants';
+import {useTranslation} from 'react-i18next';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -17,6 +18,8 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export default function StackNavigator() {
   const [isAuth, setIsAuth] = useState<boolean>(false);
+
+  const {t, i18n} = useTranslation();
 
   const getIsAuth = async () => {
     const response = await AsyncStorage.getItem('isAuth');
@@ -74,13 +77,28 @@ export default function StackNavigator() {
         headerStyle: {backgroundColor: Colors.c90BF00},
         headerTintColor: Colors.cFFFFFF,
       })}>
-      <Tab.Screen name={AppScreens.Home} component={HomeScreen} />
+      <Tab.Screen
+        name={AppScreens.Home}
+        component={HomeScreen}
+        options={{
+          title: t('navigate:home'),
+        }}
+      />
       <Tab.Screen
         name={AppScreens.Map}
         // options={{headerShown: false}}
         component={MapScreen}
+        options={{
+          title: t('navigate:map'),
+        }}
       />
-      <Tab.Screen name={AppScreens.Profile} component={ProfileScreen} />
+      <Tab.Screen
+        name={AppScreens.Profile}
+        component={ProfileScreen}
+        options={{
+          title: t('navigate:profile'),
+        }}
+      />
     </Tab.Navigator>
   );
 }
