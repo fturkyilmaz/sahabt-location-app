@@ -11,33 +11,20 @@ import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors} from '../constants';
 import {useTranslation} from 'react-i18next';
+import {GetIsAuth} from '../redux/system/selectors';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export default function StackNavigator() {
-  const [isAuth, setIsAuth] = useState<boolean>(false);
+  const isAuth = GetIsAuth();
 
   const {t, i18n} = useTranslation();
 
-  const getIsAuth = async () => {
-    const response = await AsyncStorage.getItem('isAuth');
-
-    if (response) {
-      const responseObject = JSON.parse(response);
-
-      if (responseObject?.isAuth) {
-        setIsAuth(true);
-      } else {
-        setIsAuth(false);
-      }
-    }
-  };
-
-  useEffect(() => {
-    getIsAuth();
-  }, []);
+  // useEffect(() => {
+  //   getIsAuth();
+  // }, []);
 
   const initialRouteName = isAuth ? AppScreens.Home : AppScreens.Login;
 

@@ -1,9 +1,11 @@
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import React, {useState} from 'react';
 import {View, Text, Pressable, StyleSheet} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors, FontFamilies, FontSize} from '../../../constants';
 import {useTranslation} from 'react-i18next';
+import {useDispatch} from 'react-redux';
+import {logout, setLanguage, setTheme} from '../../../redux/system/actions';
+import {GetTheme} from '../../../redux/system/selectors';
 
 type OptionButtonProp = React.ComponentProps<typeof Pressable> & {
   label: string;
@@ -24,11 +26,15 @@ const THEMES = [
 export default function ProfileScreen() {
   const {t, i18n} = useTranslation();
 
+  const selectedThemeCode = GetTheme();
+
+  const dispatch = useDispatch();
+
   const selectedLanguageCode = i18n.language;
 
-  const logout = async () => {
+  const logoutHandle = async () => {
     try {
-      await AsyncStorage.removeItem('isAuth');
+      dispatch(logout());
     } catch (error) {
       console.warn(error);
     }
@@ -46,8 +52,6 @@ export default function ProfileScreen() {
     );
   }
 
-  const [selectedThemeCode, setSelectedThemeCode] = useState('light');
-
   const getLanguage = () => {
     return LANGUAGES.map(language => {
       const selectedLanguage = language.code === selectedLanguageCode;
@@ -57,7 +61,7 @@ export default function ProfileScreen() {
           key={language.code}
           style={styles.buttonContainer}
           disabled={selectedLanguage}
-          onPress={() => setLanguage(language.code)}>
+          onPress={() => setLanguageHandle(language.code)}>
           <Text style={selectedLanguage ? styles.selectedText : styles.text}>
             {language.label}
           </Text>
@@ -68,15 +72,15 @@ export default function ProfileScreen() {
 
   const getTheme = () => {
     return THEMES.map(theme => {
-      const selectedLanguage = theme.code === selectedThemeCode;
+      const selectedTheme = theme.code === selectedThemeCode;
 
       return (
         <Pressable
           key={theme.code}
           style={styles.buttonContainer}
-          disabled={selectedLanguage}
-          onPress={() => setSelectedThemeCode(theme.code)}>
-          <Text style={selectedLanguage ? styles.selectedText : styles.text}>
+          disabled={selectedTheme}
+          onPress={() => setThemeHandle(theme.code)}>
+          <Text style={selectedTheme ? styles.selectedText : styles.text}>
             {theme.label}
           </Text>
         </Pressable>
@@ -84,8 +88,14 @@ export default function ProfileScreen() {
     });
   };
 
-  const setLanguage = (code: string) => {
+  const setLanguageHandle = (code: string) => {
+    dispatch(setLanguage(code));
+
     return i18n.changeLanguage(code);
+  };
+
+  const setThemeHandle = (theme: string) => {
+    dispatch(setTheme(theme));
   };
 
   return (
@@ -104,7 +114,9 @@ export default function ProfileScreen() {
         </OptionButton>
 
         <View style={{marginVertical: 30}}>
-          <Text onPress={async () => await logout()}>{t('common:logout')}</Text>
+          <Text onPress={async () => await logoutHandle()}>
+            {t('common:logout')}
+          </Text>
         </View>
 
         {/* <Button text="Çıkış Yap" /> */}
