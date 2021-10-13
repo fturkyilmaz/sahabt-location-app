@@ -62,11 +62,9 @@ export default function MapScreen() {
           },
           pitch: 0,
           heading: 0,
-          altitude: 10000,
+          altitude: 100000,
           zoom: 45,
         });
-
-        // console.warn(JSON.stringify(position, null, 4));
       },
       error => {
         setLiveLocation(null);
@@ -164,7 +162,7 @@ export default function MapScreen() {
   }, []);
 
   return (
-    <View style={{flex: 1}}>
+    <View style={styles.container}>
       <MapView
         ref={mapRef}
         loadingEnabled
@@ -176,14 +174,19 @@ export default function MapScreen() {
         }}
         style={StyleSheet.absoluteFillObject}>
         {mapMarkers()}
-        {liveLocation && (
-          <Marker anchor={{x: 0.5, y: 0.6}} coordinate={liveLocation} flat>
+
+        {liveLocation?.coords && (
+          <Marker
+            anchor={{x: 0.5, y: 0.6}}
+            coordinate={liveLocation?.coords}
+            flat>
             <View style={styles.dotContainer}>
               <View style={styles.arrow} />
               <View style={styles.dot} />
             </View>
           </Marker>
         )}
+
         <Circle
           center={liveLocation}
           strokeColor={Colors.c90BF00}

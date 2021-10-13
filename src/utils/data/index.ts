@@ -17,7 +17,7 @@ export default [
     city: 'BEYOĞLU',
     size: 125,
     location: 'FURKAN TÜRKYILMAZ',
-    latitude: 41.038284,
+    latitude: 40.038284,
     longitude: 28.970329,
     comments: 'COFFY DANIŞMANLIK BEYOĞLU',
     created_at: '2020-07-16T03:35:36.281Z',

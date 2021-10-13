@@ -1,4 +1,4 @@
-import React, {useEffect} from 'react';
+import React, {useEffect, useState} from 'react';
 import {Image, View} from 'react-native';
 import Button from '../../../components/Button';
 import TextInput from '../../../components/TextInput';
@@ -8,13 +8,25 @@ import {Colors, Images, Layout} from '../../../constants';
 import {useTranslation} from 'react-i18next';
 import {useDispatch} from 'react-redux';
 import {setUser} from '../../../redux/system/actions';
+import {signIn} from '../../../services/UserService';
+import {IUserLoginRequest} from '../../../services/types';
+import HttpRequest from '../../../utils/HttpRequest';
+import axios from 'axios';
+import ApiConfig from '../../../config/ApiConfig';
 
 const Login = () => {
   const dispatch = useDispatch();
 
   const {t} = useTranslation();
 
+  const [pageData, setPageData] = useState<IUserLoginRequest>({
+    username: 'SHBTADMIN',
+    password: 'SAHABT_MANAGER',
+  });
+
   const handleLogin = async () => {
+    // const response = await signIn(pageData);
+
     dispatch(
       setUser({
         name: 'FURKAN',
@@ -22,6 +34,12 @@ const Login = () => {
         linkedin: 'https://www.linkedin.com/in/furkanturkyilmaz/',
       }),
     );
+  };
+
+  const onChangeText = (key: string, value: string) => {
+    const userRequest = {...pageData, [key]: value};
+
+    setPageData(userRequest);
   };
 
   return (
@@ -48,8 +66,17 @@ const Login = () => {
           }}>
           <View
             style={{flex: 1, marginHorizontal: 20, justifyContent: 'center'}}>
-            <TextInput label={t('common:username')} />
-            <TextInput label={t('common:password')} secureTextEntry />
+            <TextInput
+              value={pageData.username}
+              label={t('common:username')}
+              onChangeText={value => onChangeText('username', value)}
+            />
+            <TextInput
+              value={pageData.password}
+              label={t('common:password')}
+              secureTextEntry
+              onChangeText={value => onChangeText('password', value)}
+            />
 
             <View style={{marginVertical: 70}}>
               <Button text="Login" onPress={async () => await handleLogin()} />
