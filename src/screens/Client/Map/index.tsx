@@ -11,13 +11,13 @@ import {
 } from 'react-native';
 import MapView, {Circle, Marker} from 'react-native-maps';
 import {Colors} from '../../../constants';
-import LiveData from '../../../utils/data';
 import BottomSheet from '../../../components/BottomSheet';
 import Geolocation, {
   GeolocationResponse,
 } from '@react-native-community/geolocation';
 import styles from './styles';
 import GeolocationService from 'react-native-geolocation-service';
+import {getUserLocation} from '../../../services/UserService';
 
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
@@ -28,9 +28,11 @@ export default function MapScreen() {
     null,
   );
 
+  const [liveData, setLiveData] = useState<any>([]);
+
   const mapMarkers = () => {
-    return LiveData?.length > 0
-      ? LiveData.map(markerData => (
+    return liveData?.length > 0
+      ? liveData.map(markerData => (
           <Marker
             key={markerData.id}
             coordinate={{
@@ -157,7 +159,14 @@ export default function MapScreen() {
     await hasPermissionAndroid();
   };
 
+  const fetchUserLocation = async () => {
+    const response = await getUserLocation();
+
+    setLiveData(response.data);
+  };
+
   useEffect(() => {
+    fetchUserLocation();
     getLocation();
   }, []);
 

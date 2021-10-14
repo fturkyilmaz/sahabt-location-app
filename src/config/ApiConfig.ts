@@ -1,8 +1,8 @@
 import Config from 'react-native-config';
 
 const prefixes = {
-  auth: {login: 'auth/signin'},
-  projectList: 'project/list',
+  login: 'users',
+  userLocation: 'userLocation',
 };
 
 export default {prefixes, apiURL: Config.API_URL};

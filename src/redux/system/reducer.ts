@@ -7,10 +7,11 @@ import {
   LOGOUT,
   TOGGLE_LOADER,
 } from './actionTypes';
+import {IUserLoginResponse} from '../../services/types';
 
 const initialState: SystemStore = {
   loading: false,
-  userInfo: {},
+  userInfo: {} as IUserLoginResponse,
   token: '',
   language: 'en',
   theme: 'light',

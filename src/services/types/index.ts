@@ -5,17 +5,24 @@ export interface IUserLoginRequest {
 
 export interface IUserLoginResponse {
   id: number;
+  name: string;
+  lastName: string;
   username: string;
   email: string;
-  name: string;
-  surname: string;
-  displayName: string;
-  company: string;
-  mobile: string;
-  title: string;
-  managerDisplayName: string;
-  unitName: string;
-  profilePic?: any;
+  image?: any;
+}
+
+export interface IUserLocationResponse {
+  id: number;
+  time: Date;
+  city: string;
+  size: number;
+  location: string;
+  latitude: number;
+  longitude: number;
+  comments: string;
+  created_at: Date;
+  updated_at: Date;
 }
 
 export interface ResponseBase<T> {

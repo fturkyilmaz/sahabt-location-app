@@ -1,11 +1,18 @@
 import React, {useState} from 'react';
-import {View, Text, Pressable, StyleSheet} from 'react-native';
+import {
+  View,
+  Text,
+  Pressable,
+  StyleSheet,
+  Image,
+  ScrollView,
+} from 'react-native';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors, FontFamilies, FontSize} from '../../../constants';
 import {useTranslation} from 'react-i18next';
 import {useDispatch} from 'react-redux';
 import {logout, setLanguage, setTheme} from '../../../redux/system/actions';
-import {GetTheme} from '../../../redux/system/selectors';
+import {GetTheme, GetUserSelector} from '../../../redux/system/selectors';
 
 type OptionButtonProp = React.ComponentProps<typeof Pressable> & {
   label: string;
@@ -29,6 +36,8 @@ export default function ProfileScreen() {
   const selectedThemeCode = GetTheme();
 
   const dispatch = useDispatch();
+
+  const userInfo = GetUserSelector();
 
   const selectedLanguageCode = i18n.language;
 
@@ -100,7 +109,21 @@ export default function ProfileScreen() {
 
   return (
     <View style={styles.container}>
-      <View style={styles.innerContainer}>
+      <ScrollView
+        style={styles.innerContainer}
+        showsVerticalScrollIndicator={false}>
+        <View style={{alignItems: 'center'}}>
+          <Image
+            source={{uri: userInfo.image}}
+            style={{width: 200, height: 200}}
+            resizeMethod="scale"
+            resizeMode="contain"
+          />
+
+          <Text>
+            {userInfo?.name} {userInfo?.lastName}
+          </Text>
+        </View>
         <OptionButton
           label={t('common:languageSelector')}
           iconName="ios-language-outline">
@@ -118,9 +141,7 @@ export default function ProfileScreen() {
             {t('common:logout')}
           </Text>
         </View>
-
-        {/* <Button text="Çıkış Yap" /> */}
-      </View>
+      </ScrollView>
     </View>
   );
 }
@@ -149,7 +170,7 @@ const styles = StyleSheet.create({
   innerContainer: {
     flex: 1,
     backgroundColor: Colors.cF2F4F5,
-    margin: 15,
+    marginHorizontal: 10,
   },
   row: {
     flexDirection: 'row',

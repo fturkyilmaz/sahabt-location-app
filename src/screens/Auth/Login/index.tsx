@@ -20,20 +20,20 @@ const Login = () => {
   const {t} = useTranslation();
 
   const [pageData, setPageData] = useState<IUserLoginRequest>({
-    username: 'SHBTADMIN',
-    password: 'SAHABT_MANAGER',
+    username: 'shbtadmin',
+    password: 'adminSAHABT.',
   });
 
   const handleLogin = async () => {
-    // const response = await signIn(pageData);
+    const response = await signIn(pageData);
 
-    dispatch(
-      setUser({
-        name: 'FURKAN',
-        surname: 'TÜRKYILMAZ',
-        linkedin: 'https://www.linkedin.com/in/furkanturkyilmaz/',
-      }),
-    );
+    console.log('REsponse', response.data);
+
+    const {data} = response;
+
+    if (data && data.length > 0) {
+      dispatch(setUser(data[0]));
+    }
   };
 
   const onChangeText = (key: string, value: string) => {
