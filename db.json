@@ -469,9 +469,10 @@
       "location": "FURKAN TÜRKYILMAZ",
       "latitude": 41.0027189,
       "longitude": 29.0528297,
-      "comments": "COFFY DANIŞMANLIK DOMINOS AKASYA AVM",
+      "comments": "AKASYA AVM",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     },
     {
       "id": 637414,
@@ -483,7 +484,8 @@
       "longitude": 28.970329,
       "comments": "COFFY DANIŞMANLIK BEYOĞLU",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     },
     {
       "id": 673414,
@@ -493,9 +495,10 @@
       "location": "FURKAN TÜRKYILMAZ",
       "latitude": 40.962856,
       "longitude": 29.061369,
-      "comments": "COFFY DANIŞMANLIK DOMINOS AKASYA AVM",
+      "comments": "AKASYA AVM",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     },
     {
       "id": 674132,
@@ -507,7 +510,8 @@
       "longitude": 29.090556,
       "comments": "COFFY DANIŞMANLIK DOMINOS BEYKOZ AVM",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     },
     {
       "id": 674332,
@@ -519,7 +523,8 @@
       "longitude": 29.05,
       "comments": "COFFY DANIŞMANLIK DOMINOS SARIYER AVM",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     },
     {
       "id": 1,
@@ -531,7 +536,8 @@
       "longitude": 29.173745,
       "comments": "COFFY DANIŞMANLIK DOMINOS KARTAL",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     },
     {
       "id": 2,
@@ -543,7 +549,8 @@
       "longitude": 29.272499,
       "comments": "COFFY DANIŞMANLIK DOMINOS PENDİK",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     },
     {
       "id": 3,
@@ -555,7 +562,8 @@
       "longitude": 29.032669,
       "comments": "COFFY DANIŞMANLIK DOMINOS ÜSKÜDAR",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     },
     {
       "id": 4,
@@ -567,7 +575,8 @@
       "longitude": 28.680119,
       "comments": "COFFY DANIŞMANLIK DOMINOS Esenyurt",
       "created_at": "2020-07-16T03:35:36.281Z",
-      "updated_at": "2020-07-16T03:35:36.281Z"
+      "updated_at": "2020-07-16T03:35:36.281Z",
+      "image": "https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1"
     }
   ]
 }

@@ -23,6 +23,7 @@ export interface IUserLocationResponse {
   comments: string;
   created_at: Date;
   updated_at: Date;
+  image: string;
 }
 
 export interface ResponseBase<T> {

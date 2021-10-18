@@ -3,6 +3,22 @@ import {Colors} from '../../../constants';
 
 export default StyleSheet.create({
   container: {flex: 1},
+  zoomContainer: {
+    alignItems: 'center',
+    justifyContent: 'center',
+    position: 'absolute',
+    bottom: 20,
+    end: 20,
+    borderRadius: 5,
+    backgroundColor: Colors.cF2F4F5,
+  },
+  text: {},
+  button: {padding: 15},
+  spacer: {
+    width: '100%',
+    borderBottomWidth: 1,
+    borderColor: Colors.c7c7e80,
+  },
   dotContainer: {justifyContent: 'center', alignItems: 'center'},
   arrow: {
     width: 0,

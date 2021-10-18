@@ -8,7 +8,8 @@
     "start": "react-native start",
     "test": "jest",
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
-    "pod": "npx pod-install ios"
+    "pod": "npx pod-install ios",
+    "jsonServer": "json-server --watch db.json"
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.9",

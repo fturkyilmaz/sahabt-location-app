@@ -8,9 +8,11 @@ import {
   Alert,
   PermissionsAndroid,
   ToastAndroid,
+  TouchableOpacity,
+  Image,
 } from 'react-native';
-import MapView, {Circle, Marker} from 'react-native-maps';
-import {Colors} from '../../../constants';
+import MapView, {Circle, Marker, Polyline} from 'react-native-maps';
+import {Colors, FontFamilies, FontSize, Layout} from '../../../constants';
 import BottomSheet from '../../../components/BottomSheet';
 import Geolocation, {
   GeolocationResponse,
@@ -18,11 +20,16 @@ import Geolocation, {
 import styles from './styles';
 import GeolocationService from 'react-native-geolocation-service';
 import {getUserLocation} from '../../../services/UserService';
+import {IUserLocationResponse} from '../../../services/types';
+import Button from '../../../components/Button';
 
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
 
   const [isShowBottomSheet, setIsShowBottomSheet] = useState<boolean>(false);
+
+  const [markerDetail, setMarketDetail] =
+    useState<IUserLocationResponse | null>(null);
 
   const [liveLocation, setLiveLocation] = useState<GeolocationResponse | null>(
     null,
@@ -41,9 +48,18 @@ export default function MapScreen() {
               latitudeDelta: 0.2922,
               longitudeDelta: 0.1421,
             }}
+            onPress={() => markerClick(markerData)}
           />
         ))
       : null;
+  };
+
+  const markerClick = (detail: IUserLocationResponse) => {
+    console.warn(JSON.stringify(detail));
+
+    setMarketDetail(detail);
+
+    showBottomSheet();
   };
 
   const getLocation = async () => {
@@ -83,6 +99,10 @@ export default function MapScreen() {
 
   const closeBottomSheet = () => {
     setIsShowBottomSheet(false);
+  };
+
+  const showBottomSheet = () => {
+    setIsShowBottomSheet(true);
   };
 
   const openSetting = () => {
@@ -165,6 +185,36 @@ export default function MapScreen() {
     setLiveData(response.data);
   };
 
+  const zoomDelta = 0.002;
+
+  const onZoom = (zoomSign: number) => {
+    if (liveLocation?.coords) {
+      const {coords} = liveLocation;
+
+      const zoomedRegion = {
+        ...coords,
+        latitudeDelta: zoomDelta * zoomSign,
+        longitudeDelta: zoomDelta * zoomSign,
+      };
+
+      mapRef.current!.animateToRegion(zoomedRegion);
+    }
+  };
+
+  const onZoomIn = () => {
+    onZoom(3);
+  };
+
+  // Fix IT Zoom out problem !!!
+
+  const onZoomOut = () => {
+    onZoom(1);
+  };
+
+  const navigateLocation = (navigateParams: IUserLocationResponse | null) => {
+    console.log('navigateParams', navigateParams);
+  };
+
   useEffect(() => {
     fetchUserLocation();
     getLocation();
@@ -181,6 +231,10 @@ export default function MapScreen() {
           latitudeDelta: 0.2922,
           longitudeDelta: 0.1421,
         }}
+        paddingAdjustmentBehavior="automatic"
+        showsMyLocationButton={true}
+        showsBuildings={true}
+        maxZoomLevel={17.5}
         style={StyleSheet.absoluteFillObject}>
         {mapMarkers()}
 
@@ -202,10 +256,54 @@ export default function MapScreen() {
           fillColor={Colors.c7c7e80}
         />
       </MapView>
+      <View style={styles.zoomContainer}>
+        <TouchableOpacity style={styles.button} onPress={onZoomIn}>
+          <Text style={styles.text}>+</Text>
+        </TouchableOpacity>
+        <View style={styles.spacer} />
+        <TouchableOpacity style={styles.button} onPress={onZoomOut}>
+          <Text style={styles.text}>-</Text>
+        </TouchableOpacity>
+      </View>
       <BottomSheet
         visible={isShowBottomSheet}
         onRequestClose={() => closeBottomSheet()}>
-        <Text>CHİLDRENIMI AYARLAYACAGIM</Text>
+        <View
+          style={{
+            marginVertical: 50,
+            alignItems: 'center',
+            justifyContent: 'center',
+          }}>
+          <Image
+            source={{uri: markerDetail?.image}}
+            style={{width: 100, height: 100, borderRadius: 75}}
+            resizeMethod="scale"
+            resizeMode="contain"
+          />
+          <Text
+            style={{fontFamily: FontFamilies.msBold, fontSize: FontSize.f24}}>
+            {markerDetail?.location}
+          </Text>
+
+          <Text
+            style={{
+              fontFamily: FontFamilies.msRegular,
+              fontSize: FontSize.f14,
+              color: Colors.c7c7e80,
+              marginVertical: 15,
+            }}>
+            {markerDetail?.comments}
+          </Text>
+        </View>
+        <Button
+          text="Konuma Git"
+          onPress={() =>
+            navigateLocation({
+              latitude: markerDetail?.latitude,
+              longitude: markerDetail?.longitude,
+            })
+          }
+        />
       </BottomSheet>
     </View>
   );
