@@ -11,8 +11,8 @@ import {
   TouchableOpacity,
   Image,
 } from 'react-native';
-import MapView, {Circle, Marker, Polyline} from 'react-native-maps';
-import {Colors, FontFamilies, FontSize, Layout} from '../../../constants';
+import MapView, {LatLng, Marker, Polyline} from 'react-native-maps';
+import {Colors} from '../../../constants';
 import BottomSheet from '../../../components/BottomSheet';
 import Geolocation, {
   GeolocationResponse,
@@ -27,6 +27,8 @@ export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
 
   const [isShowBottomSheet, setIsShowBottomSheet] = useState<boolean>(false);
+
+  const [polylineCoordinates, setPolylineCoordinate] = useState<LatLng[]>([]);
 
   const [markerDetail, setMarketDetail] =
     useState<IUserLocationResponse | null>(null);
@@ -211,8 +213,21 @@ export default function MapScreen() {
     onZoom(1);
   };
 
-  const navigateLocation = (navigateParams: IUserLocationResponse | null) => {
-    console.log('navigateParams', navigateParams);
+  const navigateLocation = (navigateParams: LatLng | null) => {
+    if (navigateParams?.latitude && navigateParams?.longitude) {
+      if (liveLocation?.coords) {
+        const liveCoord: LatLng = {
+          latitude: liveLocation.coords?.latitude,
+          longitude: liveLocation.coords?.longitude,
+        };
+
+        const results = [liveCoord, navigateParams];
+
+        setPolylineCoordinate(results);
+
+        closeBottomSheet();
+      }
+    }
   };
 
   useEffect(() => {
@@ -250,11 +265,14 @@ export default function MapScreen() {
           </Marker>
         )}
 
-        <Circle
-          center={liveLocation}
-          strokeColor={Colors.c90BF00}
-          fillColor={Colors.c7c7e80}
-        />
+        {polylineCoordinates?.length > 1 && (
+          <Polyline
+            testID="routePoly"
+            coordinates={polylineCoordinates}
+            strokeWidth={5}
+            strokeColor={Colors.c90BF00}
+          />
+        )}
       </MapView>
       <View style={styles.zoomContainer}>
         <TouchableOpacity style={styles.button} onPress={onZoomIn}>
@@ -268,42 +286,31 @@ export default function MapScreen() {
       <BottomSheet
         visible={isShowBottomSheet}
         onRequestClose={() => closeBottomSheet()}>
-        <View
-          style={{
-            marginVertical: 50,
-            alignItems: 'center',
-            justifyContent: 'center',
-          }}>
+        <View style={styles.imageContainer}>
           <Image
             source={{uri: markerDetail?.image}}
-            style={{width: 100, height: 100, borderRadius: 75}}
+            style={styles.image}
             resizeMethod="scale"
             resizeMode="contain"
           />
-          <Text
-            style={{fontFamily: FontFamilies.msBold, fontSize: FontSize.f24}}>
-            {markerDetail?.location}
-          </Text>
-
-          <Text
-            style={{
-              fontFamily: FontFamilies.msRegular,
-              fontSize: FontSize.f14,
-              color: Colors.c7c7e80,
-              marginVertical: 15,
-            }}>
-            {markerDetail?.comments}
-          </Text>
         </View>
-        <Button
-          text="Konuma Git"
-          onPress={() =>
-            navigateLocation({
-              latitude: markerDetail?.latitude,
-              longitude: markerDetail?.longitude,
-            })
-          }
-        />
+        <View style={styles.descriptionContainer}>
+          <Text style={styles.text}>{markerDetail?.location}</Text>
+
+          <Text style={styles.description}>{markerDetail?.comments}</Text>
+        </View>
+
+        {markerDetail && (
+          <Button
+            text="Konuma Git"
+            onPress={() =>
+              navigateLocation({
+                latitude: markerDetail?.latitude,
+                longitude: markerDetail?.longitude,
+              })
+            }
+          />
+        )}
       </BottomSheet>
     </View>
   );

@@ -64,13 +64,13 @@ export default function StackNavigator() {
         headerStyle: {backgroundColor: Colors.c90BF00},
         headerTintColor: Colors.cFFFFFF,
       })}>
-      <Tab.Screen
+      {/* <Tab.Screen
         name={AppScreens.Home}
         component={HomeScreen}
         options={{
           title: t('navigate:home'),
         }}
-      />
+      /> */}
       <Tab.Screen
         name={AppScreens.Map}
         // options={{headerShown: false}}

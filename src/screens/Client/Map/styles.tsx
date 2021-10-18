@@ -1,5 +1,5 @@
 import {StyleSheet} from 'react-native';
-import {Colors} from '../../../constants';
+import {Colors, FontFamilies, FontSize, Layout} from '../../../constants';
 
 export default StyleSheet.create({
   container: {flex: 1},
@@ -12,7 +12,27 @@ export default StyleSheet.create({
     borderRadius: 5,
     backgroundColor: Colors.cF2F4F5,
   },
-  text: {},
+  imageContainer: {
+    position: 'absolute',
+    zIndex: 1,
+    top: -110,
+    backgroundColor: Colors.cFFFFFF,
+    borderRadius: 50,
+    left: Layout.width * 0.32,
+  },
+  image: {width: 100, height: 100, borderRadius: 75},
+  text: {fontFamily: FontFamilies.msBold, fontSize: FontSize.f24},
+  description: {
+    fontFamily: FontFamilies.msRegular,
+    fontSize: FontSize.f14,
+    color: Colors.c7c7e80,
+    marginVertical: 15,
+  },
+  descriptionContainer: {
+    marginVertical: 50,
+    alignItems: 'center',
+    justifyContent: 'center',
+  },
   button: {padding: 15},
   spacer: {
     width: '100%',

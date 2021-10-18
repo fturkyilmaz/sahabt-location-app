@@ -9,6 +9,16 @@ export default StyleSheet.create({
     borderTopLeftRadius: 29,
     padding: 15,
   },
+  innerContainer: {flexDirection: 'row', justifyContent: 'flex-end'},
+  buttonContainer: {
+    display: 'flex',
+    height: 40,
+    borderRadius: 5,
+    justifyContent: 'center',
+    alignItems: 'center',
+    width: '15%',
+    backgroundColor: 'red',
+  },
   modalContainer: {margin: 0},
   overlay: {flex: 1, justifyContent: 'flex-end'},
 });

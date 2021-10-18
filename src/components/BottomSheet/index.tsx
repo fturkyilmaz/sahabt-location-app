@@ -1,7 +1,9 @@
 import React from 'react';
-import {View, Text, Animated, TouchableOpacity} from 'react-native';
+import {View, Animated, TouchableOpacity} from 'react-native';
 import Modal from 'react-native-modal';
 import styles from './styles';
+import Icon from 'react-native-vector-icons/Ionicons';
+import {Colors} from '../../constants';
 
 type Props = {
   onRequestClose: () => void;
@@ -20,20 +22,12 @@ export default function BottomSheet(props: Props) {
       style={styles.modalContainer}>
       <View style={styles.overlay}>
         <Animated.View style={styles.container}>
-          <View style={{flexDirection: 'row', justifyContent: 'flex-end'}}>
+          <View style={styles.innerContainer}>
             <TouchableOpacity
               activeOpacity={0.9}
               onPress={() => onRequestClose()}
-              style={{
-                display: 'flex',
-                height: 40,
-                borderRadius: 5,
-                justifyContent: 'center',
-                alignItems: 'center',
-                width: '15%',
-                backgroundColor: 'red',
-              }}>
-              <Text>KAPAT</Text>
+              style={styles.buttonContainer}>
+              <Icon name="close" size={26} color={Colors.cFFFFFF} />
             </TouchableOpacity>
           </View>
           <View>{children}</View>

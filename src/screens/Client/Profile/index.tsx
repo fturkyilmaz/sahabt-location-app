@@ -1,12 +1,6 @@
 import React, {useState} from 'react';
-import {
-  View,
-  Text,
-  Pressable,
-  StyleSheet,
-  Image,
-  ScrollView,
-} from 'react-native';
+import {Pressable, StyleSheet, Image, ScrollView} from 'react-native';
+import {View, Text} from '../../../components/Themed';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors, FontFamilies, FontSize} from '../../../constants';
 import {useTranslation} from 'react-i18next';
@@ -149,7 +143,10 @@ export default function ProfileScreen() {
 const styles = StyleSheet.create({
   container: {
     flex: 1,
-    backgroundColor: Colors.cF2F4F5,
+  },
+  innerContainer: {
+    flex: 1,
+    marginHorizontal: 10,
   },
   buttonContainer: {
     marginTop: 10,
@@ -163,14 +160,8 @@ const styles = StyleSheet.create({
   },
   text: {
     fontSize: FontSize.f17,
-    color: Colors.c000000,
     paddingVertical: 5,
     fontFamily: FontFamilies.msLight,
-  },
-  innerContainer: {
-    flex: 1,
-    backgroundColor: Colors.cF2F4F5,
-    marginHorizontal: 10,
   },
   row: {
     flexDirection: 'row',
