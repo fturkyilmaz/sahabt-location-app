@@ -1,7 +1,6 @@
 import React from 'react';
-import {View, StyleSheet, TextInput} from 'react-native';
+import {View, StyleSheet, TextInput, Text} from 'react-native';
 import {Colors, FontFamilies, FontSize} from '../../constants';
-import Text from '../Text';
 
 type Props = React.ComponentProps<typeof TextInput> & {
   label: string;
@@ -26,6 +25,17 @@ const styles = StyleSheet.create({
     fontSize: FontSize.f15,
     fontFamily: FontFamilies.msRegular,
     padding: 15,
+    borderWidth: 1,
+    borderTopLeftRadius: 10,
+    borderBottomLeftRadius: 10,
+    borderBottomRightRadius: 10,
+    borderColor: Colors.c7c7e80,
+  },
+  inputDark: {
+    fontSize: FontSize.f15,
+    fontFamily: FontFamilies.msRegular,
+    padding: 15,
+    color: Colors.cFFFFFF,
     borderWidth: 1,
     borderTopLeftRadius: 10,
     borderBottomLeftRadius: 10,

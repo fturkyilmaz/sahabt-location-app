@@ -1,5 +1,5 @@
-import React, {useEffect, useState} from 'react';
-import {Image, View} from 'react-native';
+import React, {useState} from 'react';
+import {Alert, Image, View as DefaultView} from 'react-native';
 import Button from '../../../components/Button';
 import TextInput from '../../../components/TextInput';
 import styles from './styles';
@@ -10,9 +10,7 @@ import {useDispatch} from 'react-redux';
 import {setUser} from '../../../redux/system/actions';
 import {signIn} from '../../../services/UserService';
 import {IUserLoginRequest} from '../../../services/types';
-import HttpRequest from '../../../utils/HttpRequest';
-import axios from 'axios';
-import ApiConfig from '../../../config/ApiConfig';
+import {View} from '../../../components/Themed';
 
 const Login = () => {
   const dispatch = useDispatch();
@@ -27,12 +25,12 @@ const Login = () => {
   const handleLogin = async () => {
     const response = await signIn(pageData);
 
-    console.log('REsponse', response.data);
-
     const {data} = response;
 
     if (data && data.length > 0) {
       dispatch(setUser(data[0]));
+    } else {
+      Alert.alert('Kullanıcı adı yada şifreniz yanlıştır');
     }
   };
 
@@ -44,28 +42,37 @@ const Login = () => {
 
   return (
     <View style={styles.container}>
-      <View style={styles.innerContainer}>
-        <View style={styles.imageContainer}>
+      <View
+        style={styles.innerContainer}
+        lightColor={Colors.c90BF00}
+        darkColor={Colors.c000000}>
+        <DefaultView style={styles.imageContainer}>
           <Image
             source={Images.logo}
             style={styles.image}
             resizeMethod="scale"
             resizeMode="contain"
           />
-        </View>
+        </DefaultView>
 
         <View
           style={{
             borderTopLeftRadius: 75,
-            backgroundColor: Colors.cFFFFFF,
             height: Layout.height / 1.5,
             position: 'absolute',
             left: 0,
             right: 0,
+            zIndex: 324234,
             bottom: 0,
-          }}>
-          <View
-            style={{flex: 1, marginHorizontal: 20, justifyContent: 'center'}}>
+          }}
+          lightColor={Colors.cFFFFFF}
+          darkColor={Colors.cFFFFFF}>
+          <DefaultView
+            style={{
+              flex: 1,
+              padding: 20,
+              justifyContent: 'center',
+            }}>
             <TextInput
               value={pageData.username}
               label={t('common:username')}
@@ -78,10 +85,10 @@ const Login = () => {
               onChangeText={value => onChangeText('password', value)}
             />
 
-            <View style={{marginVertical: 70}}>
+            <DefaultView style={{marginVertical: 70}}>
               <Button text="Login" onPress={async () => await handleLogin()} />
-            </View>
-          </View>
+            </DefaultView>
+          </DefaultView>
         </View>
       </View>
     </View>

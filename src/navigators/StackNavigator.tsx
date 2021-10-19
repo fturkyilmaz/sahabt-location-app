@@ -1,17 +1,16 @@
-import React, {useEffect, useState} from 'react';
+import React from 'react';
 import {createStackNavigator} from '@react-navigation/stack';
 import {RootStackParamList} from '../types/navigation';
 import AppScreens from '../constants/Screens';
 import LoginScreen from '../screens/Auth/Login';
-import HomeScreen from '../screens/Client/Home';
 import ProfileScreen from '../screens/Client/Profile';
 import MapScreen from '../screens/Client/Map';
-import AsyncStorage from '@react-native-async-storage/async-storage';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
 import Ionicons from 'react-native-vector-icons/Ionicons';
-import {Colors} from '../constants';
+import {Colors, FontFamilies, FontSize} from '../constants';
 import {useTranslation} from 'react-i18next';
 import {GetIsAuth} from '../redux/system/selectors';
+import useColorScheme from '../hook/useColorScheme';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -20,11 +19,9 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 export default function StackNavigator() {
   const isAuth = GetIsAuth();
 
-  const {t, i18n} = useTranslation();
+  const isDark = useColorScheme() === 'dark';
 
-  // useEffect(() => {
-  //   getIsAuth();
-  // }, []);
+  const {t} = useTranslation();
 
   const initialRouteName = isAuth ? AppScreens.Home : AppScreens.Login;
 
@@ -60,8 +57,18 @@ export default function StackNavigator() {
             <Ionicons name={iconName} size={size} color={Colors.c90BF00} />
           );
         },
-        tabBarActiveTintColor: Colors.c90BF00,
-        headerStyle: {backgroundColor: Colors.c90BF00},
+        tabBarActiveTintColor: isDark ? Colors.c86AB14 : Colors.c90BF00,
+        headerTitleAllowFontScaling: true,
+        tabBarLabelStyle: {
+          fontFamily: FontFamilies.msBold,
+        },
+        headerStyle: {
+          backgroundColor: isDark ? Colors.c000000 : Colors.c90BF00,
+        },
+        headerTitleStyle: {
+          fontFamily: FontFamilies.msBold,
+          fontSize: FontSize.f19,
+        },
         headerTintColor: Colors.cFFFFFF,
       })}>
       {/* <Tab.Screen
