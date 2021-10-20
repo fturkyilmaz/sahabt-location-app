@@ -41,7 +41,10 @@ const Login = () => {
   };
 
   return (
-    <View style={styles.container}>
+    <View
+      style={styles.container}
+      lightColor={Colors.c90BF00}
+      darkColor={Colors.c000000}>
       <View
         style={styles.innerContainer}
         lightColor={Colors.c90BF00}

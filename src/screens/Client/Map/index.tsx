@@ -22,6 +22,7 @@ import GeolocationService from 'react-native-geolocation-service';
 import {getUserLocation} from '../../../services/UserService';
 import {IUserLocationResponse} from '../../../services/types';
 import Button from '../../../components/Button';
+import MapViewDirections from 'react-native-maps-directions';
 
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
@@ -157,6 +158,8 @@ export default function MapScreen() {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
 
+    alert(`${hasPermission} ${status}`);
+
     if (status === PermissionsAndroid.RESULTS.GRANTED) {
       return true;
     }
@@ -165,7 +168,7 @@ export default function MapScreen() {
       ToastAndroid.show('Konum izniniz kapalıdır.', ToastAndroid.LONG);
     }
     if (status === PermissionsAndroid.RESULTS.NEVER_ASK_AGAIN) {
-      ToastAndroid.show('Konum izniniz iptal etmişsiniz', ToastAndroid.LONG);
+      ToastAndroid.show('Konum iznini iptal etmişsiniz', ToastAndroid.LONG);
     }
 
     return false;
@@ -213,7 +216,19 @@ export default function MapScreen() {
     onZoom(1);
   };
 
-  const navigateLocation = (navigateParams: LatLng | null) => {
+  const googleMapOpenUrl = async ({latitude, longitude}: LatLng) => {
+    await Linking.openURL(
+      `https://maps.google.com/maps?daddr=${latitude},${longitude}`,
+    );
+  };
+
+  const appleMapOpenUrl = async ({latitude, longitude}: LatLng) => {
+    await Linking.openURL(
+      `https://maps.apple.com/maps?daddr=${latitude},${longitude}`,
+    );
+  };
+
+  const navigateLocation = async (navigateParams: LatLng | null) => {
     if (navigateParams?.latitude && navigateParams?.longitude) {
       if (liveLocation?.coords) {
         const liveCoord: LatLng = {
@@ -226,6 +241,19 @@ export default function MapScreen() {
         setPolylineCoordinate(results);
 
         closeBottomSheet();
+
+        switch (Platform.OS) {
+          case 'ios':
+            await appleMapOpenUrl(navigateParams);
+            break;
+
+          case 'android':
+            await googleMapOpenUrl(navigateParams);
+            break;
+
+          default:
+            break;
+        }
       }
     }
   };
@@ -273,6 +301,14 @@ export default function MapScreen() {
             strokeColor={Colors.c90BF00}
           />
         )}
+
+        <MapViewDirections
+          apikey="AIzaSyAbF8pI7A4rz06kZmQX1SqJQcTTnCf9AKI"
+          origin={polylineCoordinates[0]}
+          destination={polylineCoordinates[1]}
+          strokeWidth={5}
+          strokeColor={Colors.c90BF00}
+        />
       </MapView>
       <View style={styles.zoomContainer}>
         <TouchableOpacity style={styles.button} onPress={onZoomIn}>

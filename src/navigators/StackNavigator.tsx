@@ -17,7 +17,7 @@ const Stack = createStackNavigator<RootStackParamList>();
 const Tab = createBottomTabNavigator<RootStackParamList>();
 
 export default function StackNavigator() {
-  const isAuth = GetIsAuth();
+  const isAuth = true;
 
   const isDark = useColorScheme() === 'dark';
 
