@@ -7,6 +7,7 @@ const prefixes = ApiConfig?.prefixes;
 export async function signIn(
   request: IUserLoginRequest,
 ): Promise<ResponseBase<IUserLoginResponse[]>> {
+  console.log('URL', ApiConfig.apiURL + prefixes.login);
   return HttpRequest.get(prefixes.login, {
     params: {username: request?.username, password: request?.password},
   });

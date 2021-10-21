@@ -5,4 +5,4 @@ const prefixes = {
   userLocation: 'userLocation',
 };
 
-export default {prefixes, apiURL: Config.API_URL};
+export default {prefixes, apiURL: 'https://location-app-sahabt.herokuapp.com/'};

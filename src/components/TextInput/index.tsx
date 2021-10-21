@@ -30,6 +30,7 @@ const styles = StyleSheet.create({
     borderBottomLeftRadius: 10,
     borderBottomRightRadius: 10,
     borderColor: Colors.c7c7e80,
+    color: Colors.c000000,
   },
   inputDark: {
     fontSize: FontSize.f15,
@@ -43,7 +44,11 @@ const styles = StyleSheet.create({
     borderColor: Colors.c7c7e80,
   },
   labelContainer: {paddingVertical: 10},
-  label: {fontSize: FontSize.f14, fontFamily: FontFamilies.msSemiBold},
+  label: {
+    fontSize: FontSize.f14,
+    fontFamily: FontFamilies.msSemiBold,
+    color: Colors.c000000,
+  },
 });
 
 export default TextField;

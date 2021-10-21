@@ -267,17 +267,15 @@ export default function MapScreen() {
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        loadingEnabled
+        // loadingEnabled
         initialRegion={{
           latitude: 41.015137,
           longitude: 28.97953,
           latitudeDelta: 0.2922,
           longitudeDelta: 0.1421,
         }}
-        paddingAdjustmentBehavior="automatic"
-        showsMyLocationButton={true}
         showsBuildings={true}
-        maxZoomLevel={17.5}
+        maxZoomLevel={11.5}
         style={StyleSheet.absoluteFillObject}>
         {mapMarkers()}
 
