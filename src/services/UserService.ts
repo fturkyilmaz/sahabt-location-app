@@ -1,13 +1,17 @@
 import HttpRequest from '../utils/HttpRequest';
 import ApiConfig from '../config/ApiConfig';
-import {IUserLoginRequest, IUserLoginResponse, ResponseBase} from './types';
+import {
+  IUserLocationResponse,
+  IUserLoginRequest,
+  IUserLoginResponse,
+  ResponseBase,
+} from './types';
 
 const prefixes = ApiConfig?.prefixes;
 
 export async function signIn(
   request: IUserLoginRequest,
 ): Promise<ResponseBase<IUserLoginResponse[]>> {
-  console.log('URL', ApiConfig.apiURL + prefixes.login);
   return HttpRequest.get(prefixes.login, {
     params: {username: request?.username, password: request?.password},
   });
@@ -15,4 +19,10 @@ export async function signIn(
 
 export async function getUserLocation(): Promise<any> {
   return HttpRequest.get(prefixes.userLocation);
+}
+
+export async function saveUserLocation(
+  request: IUserLocationResponse,
+): Promise<IUserLocationResponse> {
+  return HttpRequest.put(`${prefixes.userLocation}/${request.id}`, request);
 }

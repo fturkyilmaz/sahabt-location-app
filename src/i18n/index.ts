@@ -10,8 +10,8 @@ import tr from './tr';
 const ASYNC_STORAGE_KEY = 'userLanguage';
 
 const LANGUAGES = {
-  en,
   tr,
+  en,
 };
 
 const LANGUAGE_CODE = Object.keys(LANGUAGES);
@@ -25,14 +25,15 @@ const LANGUAGE_DETECTOR = {
         if (err) {
           console.log('Dil yüklenirken hata oluştu.');
         } else {
-          AsyncStorage.setItem(ASYNC_STORAGE_KEY, 'tr');
-          console.log('Dil setlemediniz. dil seçiniz.');
+          AsyncStorage.setItem(ASYNC_STORAGE_KEY, 'tr').then(() => {
+            console.log('Dil setlemediniz. dil seçiniz.');
+          });
         }
 
         const findBestAvailableLanguage =
           RNLocalize.findBestAvailableLanguage(LANGUAGE_CODE);
 
-        callback(findBestAvailableLanguage?.languageTag || 'en');
+        callback(findBestAvailableLanguage?.languageTag || 'tr');
 
         return;
       }

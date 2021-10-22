@@ -12,17 +12,18 @@ import {
   Image,
 } from 'react-native';
 import MapView, {LatLng, Marker, Polyline} from 'react-native-maps';
-import {Colors} from '../../../constants';
+import {Colors, Layout} from '../../../constants';
 import BottomSheet from '../../../components/BottomSheet';
 import Geolocation, {
   GeolocationResponse,
 } from '@react-native-community/geolocation';
 import styles from './styles';
 import GeolocationService from 'react-native-geolocation-service';
-import {getUserLocation} from '../../../services/UserService';
+import {getUserLocation, saveUserLocation} from '../../../services/UserService';
 import {IUserLocationResponse} from '../../../services/types';
 import Button from '../../../components/Button';
 import MapViewDirections from 'react-native-maps-directions';
+import {GetUserSelector} from '../../../redux/system/selectors';
 
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
@@ -58,8 +59,6 @@ export default function MapScreen() {
   };
 
   const markerClick = (detail: IUserLocationResponse) => {
-    console.warn(JSON.stringify(detail));
-
     setMarketDetail(detail);
 
     showBottomSheet();
@@ -74,18 +73,24 @@ export default function MapScreen() {
 
     Geolocation.getCurrentPosition(
       position => {
-        setLiveLocation(position);
+        if (position?.coords) {
+          const {latitude, longitude} = position.coords;
 
-        mapRef?.current?.animateCamera({
-          center: {
-            latitude: position?.coords?.latitude,
-            longitude: position?.coords?.longitude,
-          },
-          pitch: 0,
-          heading: 0,
-          altitude: 100000,
-          zoom: 45,
-        });
+          setLiveLocation(position);
+
+          saveUserLocationHandle({latitude, longitude}).then(() => {
+            mapRef?.current?.animateCamera({
+              center: {
+                latitude: position?.coords?.latitude,
+                longitude: position?.coords?.longitude,
+              },
+              pitch: 0,
+              heading: 0,
+              altitude: 100000,
+              zoom: 45,
+            });
+          });
+        }
       },
       error => {
         setLiveLocation(null);
@@ -158,8 +163,6 @@ export default function MapScreen() {
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
     );
 
-    alert(`${hasPermission} ${status}`);
-
     if (status === PermissionsAndroid.RESULTS.GRANTED) {
       return true;
     }
@@ -181,7 +184,7 @@ export default function MapScreen() {
       return hasPermission;
     }
 
-    await hasPermissionAndroid();
+    return await hasPermissionAndroid();
   };
 
   const fetchUserLocation = async () => {
@@ -258,6 +261,31 @@ export default function MapScreen() {
     }
   };
 
+  const userInfo = GetUserSelector();
+
+  const saveUserLocationHandle = async ({longitude, latitude}: LatLng) => {
+    if (longitude && latitude) {
+      const request = {
+        id: userInfo.id,
+        time: new Date(),
+        city: 'Kadıköy',
+        size: 125,
+        location: `${userInfo.name} ${userInfo.lastName}`,
+        latitude,
+        longitude,
+        comments: 'AKASYA AVM',
+        created_at: new Date(),
+        updated_at: new Date(),
+        image:
+          'https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1',
+      };
+
+      const response = await saveUserLocation(request);
+
+      console.log('RESPO', response);
+    }
+  };
+
   useEffect(() => {
     fetchUserLocation();
     getLocation();
@@ -267,16 +295,20 @@ export default function MapScreen() {
     <View style={styles.container}>
       <MapView
         ref={mapRef}
-        // loadingEnabled
+        loadingEnabled
         initialRegion={{
           latitude: 41.015137,
           longitude: 28.97953,
           latitudeDelta: 0.2922,
           longitudeDelta: 0.1421,
         }}
-        showsBuildings={true}
-        maxZoomLevel={11.5}
-        style={StyleSheet.absoluteFillObject}>
+        maxZoomLevel={11}
+        style={{
+          zIndex: 54435,
+          width: Layout.width,
+          height: Layout.height,
+          ...StyleSheet.absoluteFillObject,
+        }}>
         {mapMarkers()}
 
         {liveLocation?.coords && (
@@ -308,15 +340,17 @@ export default function MapScreen() {
           strokeColor={Colors.c90BF00}
         />
       </MapView>
-      <View style={styles.zoomContainer}>
-        <TouchableOpacity style={styles.button} onPress={onZoomIn}>
-          <Text style={styles.text}>+</Text>
-        </TouchableOpacity>
-        <View style={styles.spacer} />
-        <TouchableOpacity style={styles.button} onPress={onZoomOut}>
-          <Text style={styles.text}>-</Text>
-        </TouchableOpacity>
-      </View>
+      {Platform.OS === 'ios' && (
+        <View style={styles.zoomContainer}>
+          <TouchableOpacity style={styles.button} onPress={onZoomIn}>
+            <Text style={styles.text}>+</Text>
+          </TouchableOpacity>
+          <View style={styles.spacer} />
+          <TouchableOpacity style={styles.button} onPress={onZoomOut}>
+            <Text style={styles.text}>-</Text>
+          </TouchableOpacity>
+        </View>
+      )}
       <BottomSheet
         visible={isShowBottomSheet}
         onRequestClose={() => closeBottomSheet()}>
@@ -337,8 +371,8 @@ export default function MapScreen() {
         {markerDetail && (
           <Button
             text="Konuma Git"
-            onPress={() =>
-              navigateLocation({
+            onPress={async () =>
+              await navigateLocation({
                 latitude: markerDetail?.latitude,
                 longitude: markerDetail?.longitude,
               })
