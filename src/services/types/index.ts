@@ -12,6 +12,10 @@ export interface IUserLoginResponse {
   image?: any;
 }
 
+export interface IIdRequest {
+  id: number;
+}
+
 export interface IUserLocationResponse {
   id: number;
   time: Date;

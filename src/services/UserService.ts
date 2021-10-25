@@ -1,6 +1,7 @@
 import HttpRequest from '../utils/HttpRequest';
 import ApiConfig from '../config/ApiConfig';
 import {
+  IIdRequest,
   IUserLocationResponse,
   IUserLoginRequest,
   IUserLoginResponse,
@@ -25,4 +26,20 @@ export async function saveUserLocation(
   request: IUserLocationResponse,
 ): Promise<IUserLocationResponse> {
   return HttpRequest.put(`${prefixes.userLocation}/${request.id}`, request);
+}
+
+export async function saveLiveLocation(
+  request: IUserLoginResponse,
+): Promise<IUserLoginResponse> {
+  return HttpRequest.post(prefixes.userLocation, request);
+}
+
+export async function updateLiveLocation(
+  request: IUserLoginResponse,
+): Promise<IUserLoginResponse> {
+  return HttpRequest.put(`${prefixes.userLocation}/${request.id}`, request);
+}
+
+export async function getUserLocationById(request: IIdRequest) {
+  return HttpRequest.get(`${prefixes.userLocation}/${request.id}`);
 }

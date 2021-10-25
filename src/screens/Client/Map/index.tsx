@@ -19,11 +19,18 @@ import Geolocation, {
 } from '@react-native-community/geolocation';
 import styles from './styles';
 import GeolocationService from 'react-native-geolocation-service';
-import {getUserLocation, saveUserLocation} from '../../../services/UserService';
+import {
+  getUserLocation,
+  getUserLocationById,
+  saveLiveLocation,
+  saveUserLocation,
+  updateLiveLocation,
+} from '../../../services/UserService';
 import {IUserLocationResponse} from '../../../services/types';
 import Button from '../../../components/Button';
 import MapViewDirections from 'react-native-maps-directions';
 import {GetUserSelector} from '../../../redux/system/selectors';
+import HttpStatusCode from '../../../utils/StatusCode';
 
 export default function MapScreen() {
   const mapRef = useRef<MapView>(null);
@@ -64,45 +71,135 @@ export default function MapScreen() {
     showBottomSheet();
   };
 
-  const getLocation = async () => {
-    const hasPermission = await hasLocationPermission();
+  const saveUserLocationHandle = async ({latitude, longitude}: LatLng) => {
+    if (longitude && latitude) {
+      const request = {
+        id: userInfo.id,
+        time: new Date(),
+        size: 125,
+        city: 'İstanbul',
+        location: `${userInfo.name} ${userInfo.fullName}`,
+        latitude,
+        longitude,
+        comments: 'AKASYA AVM',
+        created_at: new Date(),
+        updated_at: new Date(),
+        image:
+          'https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1',
+      };
 
-    if (!hasPermission) {
-      return;
+      console.log('JSON', JSON.stringify(request));
+
+      const response = await saveLiveLocation(request);
+
+      console.log('saveUserLocationHandle', response);
+
+      return response;
     }
+  };
 
-    Geolocation.getCurrentPosition(
-      position => {
-        if (position?.coords) {
-          const {latitude, longitude} = position.coords;
+  const updateUserLocationHandle = async ({latitude, longitude}: LatLng) => {
+    if (longitude && latitude) {
+      const request = {
+        id: userInfo.id,
+        time: new Date(),
+        size: 125,
+        city: 'İstanbul',
+        location: `${userInfo.name} ${userInfo.fullName}`,
+        latitude,
+        longitude,
+        comments: 'AKASYA AVM',
+        created_at: new Date(),
+        updated_at: new Date(),
+        image:
+          'https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1',
+      };
 
-          setLiveLocation(position);
+      console.log('JSON', JSON.stringify(request));
 
-          saveUserLocationHandle({latitude, longitude}).then(() => {
-            mapRef?.current?.animateCamera({
-              center: {
-                latitude: position?.coords?.latitude,
-                longitude: position?.coords?.longitude,
-              },
-              pitch: 0,
-              heading: 0,
-              altitude: 100000,
-              zoom: 45,
-            });
-          });
-        }
-      },
-      error => {
-        setLiveLocation(null);
-        Alert.alert(`Code ${error.code} , ${error.message}`);
-      },
-      {
-        enableHighAccuracy: true,
-        timeout: 15000,
-        maximumAge: 10000,
-        distanceFilter: 0,
-      },
-    );
+      const response = await updateLiveLocation(request);
+
+      console.log('saveUserLocationHandle', response);
+
+      return response;
+    }
+  };
+
+  const isAnyLiveLocation = async (): Promise<boolean> => {
+    const response = await getUserLocationById({id: userInfo.id});
+
+    const isAny = response.status === HttpStatusCode.OK;
+
+    console.log('ANYYY', isAny);
+
+    return isAny;
+  };
+
+  const getLocation = async () => {
+    try {
+      const hasPermission = await hasLocationPermission();
+
+      if (!hasPermission) {
+        return;
+      }
+
+      Geolocation.getCurrentPosition(
+        position => {
+          if (position?.coords) {
+            setLiveLocation(position);
+
+            const {latitude, longitude} = position?.coords;
+
+            isAnyLiveLocation()
+              .then(isAnyUser => {
+                if (isAnyUser) {
+                  updateUserLocationHandle({
+                    latitude,
+                    longitude,
+                  }).then(() => {
+                    mapRef?.current?.animateCamera({
+                      center: {
+                        latitude,
+                        longitude,
+                      },
+                      pitch: 0,
+                      heading: 0,
+                      altitude: 100000,
+                      zoom: 45,
+                    });
+                  });
+                }
+              })
+              .catch(() => {
+                saveUserLocationHandle({latitude, longitude}).then(() => {
+                  mapRef?.current?.animateCamera({
+                    center: {
+                      latitude,
+                      longitude,
+                    },
+                    pitch: 0,
+                    heading: 0,
+                    altitude: 100000,
+                    zoom: 45,
+                  });
+                });
+              });
+          }
+        },
+        error => {
+          setLiveLocation(null);
+          Alert.alert(`Code ${error.code} , ${error.message}`);
+        },
+        {
+          enableHighAccuracy: true,
+          timeout: 15000,
+          maximumAge: 10000,
+          distanceFilter: 0,
+        },
+      );
+    } catch (error) {
+      console.warn(error);
+    }
   };
 
   const closeBottomSheet = () => {
@@ -263,28 +360,28 @@ export default function MapScreen() {
 
   const userInfo = GetUserSelector();
 
-  const saveUserLocationHandle = async ({longitude, latitude}: LatLng) => {
-    if (longitude && latitude) {
-      const request = {
-        id: userInfo.id,
-        time: new Date(),
-        city: 'Kadıköy',
-        size: 125,
-        location: `${userInfo.name} ${userInfo.lastName}`,
-        latitude,
-        longitude,
-        comments: 'AKASYA AVM',
-        created_at: new Date(),
-        updated_at: new Date(),
-        image:
-          'https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1',
-      };
+  // const saveUserLocationHandle = async ({longitude, latitude}: LatLng) => {
+  //   if (longitude && latitude) {
+  //     const request = {
+  //       id: userInfo.id,
+  //       time: new Date(),
+  //       city: 'Kadıköy',
+  //       size: 125,
+  //       location: `${userInfo.name} ${userInfo.lastName}`,
+  //       latitude,
+  //       longitude,
+  //       comments: 'AKASYA AVM',
+  //       created_at: new Date(),
+  //       updated_at: new Date(),
+  //       image:
+  //         'https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1',
+  //     };
 
-      const response = await saveUserLocation(request);
+  //     const response = await saveUserLocation(request);
 
-      console.log('RESPO', response);
-    }
-  };
+  //     console.log('RESPO', response);
+  //   }
+  // };
 
   useEffect(() => {
     fetchUserLocation();
