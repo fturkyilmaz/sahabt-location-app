@@ -46,6 +46,8 @@ export default function MapScreen() {
     null,
   );
 
+  const [zoom, setZoom] = useState(100000);
+
   const [liveData, setLiveData] = useState<any>([]);
 
   const mapMarkers = () => {
@@ -88,11 +90,11 @@ export default function MapScreen() {
           'https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1',
       };
 
-      console.log('JSON', JSON.stringify(request));
+      // console.log('JSON', JSON.stringify(request));
 
       const response = await saveLiveLocation(request);
 
-      console.log('saveUserLocationHandle', response);
+      // console.log('saveUserLocationHandle', response);
 
       return response;
     }
@@ -115,11 +117,11 @@ export default function MapScreen() {
           'https://robohash.org/consequunturmolestiasaut.png?size=150x150&set=set1',
       };
 
-      console.log('JSON', JSON.stringify(request));
+      // console.log('JSON', JSON.stringify(request));
 
       const response = await updateLiveLocation(request);
 
-      console.log('saveUserLocationHandle', response);
+      // console.log('saveUserLocationHandle', response);
 
       return response;
     }
@@ -129,8 +131,6 @@ export default function MapScreen() {
     const response = await getUserLocationById({id: userInfo.id});
 
     const isAny = response.status === HttpStatusCode.OK;
-
-    console.log('ANYYY', isAny);
 
     return isAny;
   };
@@ -290,30 +290,42 @@ export default function MapScreen() {
     setLiveData(response.data);
   };
 
-  const zoomDelta = 0.002;
+  const zoomDelta = 10000;
 
-  const onZoom = (zoomSign: number) => {
-    if (liveLocation?.coords) {
-      const {coords} = liveLocation;
+  const onZoom = (zoomSign = zoomDelta) => {
+    mapRef?.current?.getCamera().then(cam => {
+      cam.altitude = zoomSign;
 
-      const zoomedRegion = {
-        ...coords,
-        latitudeDelta: zoomDelta * zoomSign,
-        longitudeDelta: zoomDelta * zoomSign,
-      };
+      console.log('CAMARE', JSON.stringify(cam, null, 4));
 
-      mapRef.current!.animateToRegion(zoomedRegion);
-    }
+      mapRef?.current?.animateCamera(cam);
+    });
+
+    // if (liveLocation?.coords) {
+    //   const {coords} = liveLocation;
+    //   const zoomedRegion = {
+    //     ...coords,
+    //     latitudeDelta: zoomDelta * zoomSign,
+    //     longitudeDelta: zoomDelta * zoomSign,
+    //   };
+    //   mapRef.current!.animateToRegion(zoomedRegion);
+    // }
   };
 
   const onZoomIn = () => {
-    onZoom(3);
+    const newZoom = zoom - 10000;
+
+    setZoom(newZoom);
+
+    onZoom(15000);
   };
 
   // Fix IT Zoom out problem !!!
 
   const onZoomOut = () => {
-    onZoom(1);
+    setZoom(10000);
+
+    onZoom(10000);
   };
 
   const googleMapOpenUrl = async ({latitude, longitude}: LatLng) => {
@@ -437,6 +449,7 @@ export default function MapScreen() {
           strokeColor={Colors.c90BF00}
         />
       </MapView>
+
       {Platform.OS === 'ios' && (
         <View style={styles.zoomContainer}>
           <TouchableOpacity style={styles.button} onPress={onZoomIn}>
@@ -448,6 +461,7 @@ export default function MapScreen() {
           </TouchableOpacity>
         </View>
       )}
+
       <BottomSheet
         visible={isShowBottomSheet}
         onRequestClose={() => closeBottomSheet()}>

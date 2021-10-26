@@ -10,6 +10,7 @@ import {Colors} from '../constants';
 import RootNavigator from './StackNavigator';
 import useThemeColor from '../hook/useThemeColor';
 import useColorScheme from '../hook/useColorScheme';
+import {GetTheme} from '../redux/system/selectors';
 
 const MyTheme = {
   ...DefaultTheme,
@@ -25,7 +26,8 @@ const MyTheme = {
 } as Theme;
 
 export default function Navigator() {
-  const systemTheme = useColorScheme();
+  // const systemTheme = useColorScheme();
+  const systemTheme = GetTheme();
 
   const dark = systemTheme === 'dark';
 

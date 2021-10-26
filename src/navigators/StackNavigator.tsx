@@ -11,6 +11,7 @@ import {Colors, FontFamilies, FontSize} from '../constants';
 import {useTranslation} from 'react-i18next';
 import {GetIsAuth} from '../redux/system/selectors';
 import useColorScheme from '../hook/useColorScheme';
+import {GetTheme} from '../redux/user/selectors';
 
 const Stack = createStackNavigator<RootStackParamList>();
 
@@ -19,7 +20,7 @@ const Tab = createBottomTabNavigator<RootStackParamList>();
 export default function StackNavigator() {
   const isAuth = GetIsAuth();
 
-  const isDark = useColorScheme() === 'dark';
+  const isDark = GetTheme() === 'dark';
 
   const {t} = useTranslation();
 

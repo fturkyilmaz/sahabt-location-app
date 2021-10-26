@@ -33,7 +33,7 @@ export default StyleSheet.create({
     alignItems: 'center',
     justifyContent: 'center',
   },
-  button: {padding: 15},
+  button: {padding: 15, backgroundColor: 'red'},
   spacer: {
     width: '100%',
     borderBottomWidth: 1,
