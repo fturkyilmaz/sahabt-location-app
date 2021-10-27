@@ -56,9 +56,11 @@ export default function Navigator() {
   };
 
   return (
-    <NavigationContainer
-      theme={systemTheme === 'dark' ? darkTheme : lightTheme}>
-      <StatusBar barStyle="light-content" backgroundColor={Colors.c90BF00} />
+    <NavigationContainer theme={dark ? darkTheme : lightTheme}>
+      <StatusBar
+        barStyle="light-content"
+        backgroundColor={dark ? Colors.c000000 : Colors.c90BF00}
+      />
       <RootNavigator />
     </NavigationContainer>
   );
