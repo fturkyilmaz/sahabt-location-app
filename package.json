@@ -10,7 +10,9 @@
     "lint": "eslint . --ext .js,.jsx,.ts,.tsx",
     "pod": "npx pod-install ios",
     "jsonServer": "json-server --watch db.json",
-    "npmUpdate": "npm i -g npm-check-updates"
+    "npmUpdate": "npm i -g npm-check-updates",
+    "aab": "cd android && ./gradlew bundleRelease && cd ..",
+    "apk": "cd android && ./gradlew assembleRelease && cd .."
   },
   "dependencies": {
     "@react-native-async-storage/async-storage": "^1.15.9",

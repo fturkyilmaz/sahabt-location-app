@@ -1,5 +1,11 @@
 import React, {useState} from 'react';
-import {Pressable, StyleSheet, Image, ScrollView} from 'react-native';
+import {
+  Pressable,
+  StyleSheet,
+  Image,
+  ScrollView,
+  TouchableOpacity,
+} from 'react-native';
 import {View, Text} from '../../../components/Themed';
 import Ionicons from 'react-native-vector-icons/Ionicons';
 import {Colors, FontFamilies, FontSize} from '../../../constants';
@@ -130,11 +136,11 @@ export default function ProfileScreen() {
           {getTheme()}
         </OptionButton>
 
-        <View style={{marginVertical: 30}}>
+        <TouchableOpacity style={{marginVertical: 30}} activeOpacity={0.9}>
           <Text onPress={async () => await logoutHandle()}>
             {t('common:logout')}
           </Text>
-        </View>
+        </TouchableOpacity>
       </ScrollView>
     </View>
   );
