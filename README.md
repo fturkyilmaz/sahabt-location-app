@@ -1,4 +1,5 @@
 # react-native-sahabt-location-app
+<img src="https://i.ibb.co/j38LhFC/Screen-Shot-2022-01-02-at-16-26-44.png" width="100%" height="500"/>
 
 
 🤭 React Native eğitim geliştirdiğim, kullanıcıların lokasyonlarını takip ettiği uygulamayı sizlerle paylaşıyorum.
